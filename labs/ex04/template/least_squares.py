@@ -7,6 +7,24 @@ Least Square
 import numpy as np
 
 
+def compute_loss(y, tx, w):
+    """Calculate the loss using either MSE or MAE.
+
+    Args:
+        y: numpy array of shape=(N, )
+        tx: numpy array of shape=(N,2)
+        w: numpy array of shape=(2,). The vector of model parameters.
+
+    Returns:
+        the value of the loss (a scalar), corresponding to the input parameters w.
+    """
+    # ***************************************************
+    e = y-np.dot(tx,w)
+    MSE = 1/len(y) * np.dot(e,e)
+    MAE = 1/len(y) * np.mean(e)
+    return MSE
+    # ***************************************************
+
 def least_squares(y, tx):
     """Calculate the least squares solution.
        returns mse, and optimal weights.
@@ -23,8 +41,10 @@ def least_squares(y, tx):
     (array([ 0.21212121, -0.12121212]), 8.666684749742561e-33)
     """
     # ***************************************************
-    # COPY YOUR CODE FROM EX03 HERE
-    # least squares: TODO
-    # returns optimal weights, MSE
+    xtx = np.dot(np.transpose(tx),tx)
+    w = np.linalg.solve(xtx,np.dot(np.transpose(tx),y))
+    MSE = compute_loss(y,tx,w)
+    return w, MSE
+
     # ***************************************************
-    raise NotImplementedError
+
